@@ -15,3 +15,9 @@ func photoURL(apiKey key:String,textTosearchFor text: String,page: Int, numberOf
     return url
 }
     
+
+func groupsURL(apiKey key:String,textTosearchFor text: String,page: Int, numberOfPhotos number : Int) -> String {
+    let url = "https://www.flickr.com/services/rest/?method=flickr.groups.search&api_key=\(apiKey)&text=\(text)&per_page=\(number)&page=\(page)&format=json&nojsoncallback=1"
+    
+    return url
+}

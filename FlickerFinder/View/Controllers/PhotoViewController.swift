@@ -32,7 +32,7 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let keyword = searchBar.text
-        photoPresenter.getURLdata(searchText: keyword!, handler: {(finished) in
+        photoPresenter.fetchPhotoData(searchText: keyword!, handler: {(finished) in
             if finished {
                 self.tableView.reloadData()
             }

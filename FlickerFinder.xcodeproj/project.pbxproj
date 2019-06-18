@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5F24648322B9953F00D970F9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F24648222B9953F00D970F9 /* Constants.swift */; };
+		5F24648622B9963000D970F9 /* GroupsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F24648522B9963000D970F9 /* GroupsPresenter.swift */; };
 		5F47AB4A22B927AC0066E87D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F47AB4922B927AC0066E87D /* AppDelegate.swift */; };
 		5F47AB4C22B927AC0066E87D /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F47AB4B22B927AC0066E87D /* PhotoViewController.swift */; };
 		5F47AB4F22B927AC0066E87D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F47AB4D22B927AC0066E87D /* Main.storyboard */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		5F24648222B9953F00D970F9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5F24648522B9963000D970F9 /* GroupsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsPresenter.swift; sourceTree = "<group>"; };
 		5F47AB4622B927AC0066E87D /* FlickerFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickerFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F47AB4922B927AC0066E87D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F47AB4B22B927AC0066E87D /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				5FF3A64622B92C9D004AD107 /* PhotoPresenter.swift */,
+				5F24648522B9963000D970F9 /* GroupsPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				5FF3A64522B92B06004AD107 /* PhotosJSONData.swift in Sources */,
 				5F4BCA4022B961B90004C012 /* Photo+CoreDataClass.swift in Sources */,
 				5F4BCA4822B968DD0004C012 /* GroupsJSONData.swift in Sources */,
+				5F24648622B9963000D970F9 /* GroupsPresenter.swift in Sources */,
 				5F47AB4C22B927AC0066E87D /* PhotoViewController.swift in Sources */,
 				5F4BCA4322B966110004C012 /* GroupsViewController.swift in Sources */,
 				5F47AB4A22B927AC0066E87D /* AppDelegate.swift in Sources */,
