@@ -24,7 +24,7 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
         do {
             let photo = try PresistenceService.context.fetch(fetchRequest)
-            photoPresenter.flickrPhotoCoreData = photo
+            dataArray = photo
             tableView.reloadData()
         } catch {}
     }

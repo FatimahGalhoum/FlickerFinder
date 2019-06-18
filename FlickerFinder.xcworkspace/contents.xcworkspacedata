@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/fatimahgalhoum/Desktop/FlickerFinder/FlickerFinder/Model/CoreData/Group+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/fatimahgalhoum/Desktop/FlickerFinder/FlickerFinder/Model/CoreData/Group+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:/Users/fatimahgalhoum/Desktop/FlickerFinder/FlickerFinder/Model/Photo+CoreDataClass.swift">
    </FileRef>
    <FileRef

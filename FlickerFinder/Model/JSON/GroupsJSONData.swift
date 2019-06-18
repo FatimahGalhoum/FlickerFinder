@@ -9,7 +9,7 @@
 import Foundation
 
 struct FlickrGroupsResult: Codable {
-    let photos: GroupsInfo?
+    let groups: GroupsInfo?
     let stat: String
 }
 
@@ -28,6 +28,6 @@ struct GroupURL : Codable {
     let iconserver: String
     let iconfarm: Int
     let members: String
-    let topic_count: Int
+    let topic_count: Int32
     let pool_count: String
 }
