@@ -18,13 +18,7 @@ class PhotoPresenter{
     var flickrPhotoCoreData = [Photo]()
     var delegate : PhotoDataDelegate!
     
-    let apiKey = "1f128ae8f61db46906d7cad293fd3e23"
-    
-    func photoURL(apiKey key:String,textTosearchFor text: String,page: Int, numberOfPhotos number : Int) -> String {
-        let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(apiKey)&text=\(text)&per_page=\(number)&page=&format=json&nojsoncallback=1"
-        return url
-    }
-    
+
     
     func getURLdata(searchText:String, handler: @escaping (_ status: Bool) -> ()){
         Alamofire.request(photoURL(apiKey: apiKey, textTosearchFor: searchText, page: 1, numberOfPhotos: 100)).responseJSON { (response) in

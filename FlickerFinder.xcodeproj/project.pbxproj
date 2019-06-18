@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F24648322B9953F00D970F9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F24648222B9953F00D970F9 /* Constants.swift */; };
 		5F47AB4A22B927AC0066E87D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F47AB4922B927AC0066E87D /* AppDelegate.swift */; };
 		5F47AB4C22B927AC0066E87D /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F47AB4B22B927AC0066E87D /* PhotoViewController.swift */; };
 		5F47AB4F22B927AC0066E87D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F47AB4D22B927AC0066E87D /* Main.storyboard */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F24648222B9953F00D970F9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5F47AB4622B927AC0066E87D /* FlickerFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickerFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F47AB4922B927AC0066E87D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F47AB4B22B927AC0066E87D /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +62,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F24648122B9952100D970F9 /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				5F24648222B9953F00D970F9 /* Constants.swift */,
+			);
+			path = Constant;
+			sourceTree = "<group>";
+		};
+		5F24648422B995B700D970F9 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				5FF3A64A22B92D31004AD107 /* Flickr.xcdatamodeld */,
+				5F4BCA3822B950F40004C012 /* PersistenceService.swift */,
+				5F4BCA3E22B961B90004C012 /* Photo+CoreDataClass.swift */,
+				5F4BCA3F22B961B90004C012 /* Photo+CoreDataProperties.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		5F47AB3D22B927AC0066E87D = {
 			isa = PBXGroup;
 			children = (
@@ -81,7 +102,7 @@
 		5F47AB4822B927AC0066E87D /* FlickerFinder */ = {
 			isa = PBXGroup;
 			children = (
-				5F4BCA3822B950F40004C012 /* PersistenceService.swift */,
+				5F24648122B9952100D970F9 /* Constant */,
 				5F47AB5D22B928DC0066E87D /* Model */,
 				5F47AB5C22B928CD0066E87D /* Presenter */,
 				5F47AB5B22B928BF0066E87D /* View */,
@@ -113,10 +134,8 @@
 		5F47AB5D22B928DC0066E87D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5F24648422B995B700D970F9 /* CoreData */,
 				5F4BCA4622B968C10004C012 /* JSON */,
-				5F4BCA3E22B961B90004C012 /* Photo+CoreDataClass.swift */,
-				5F4BCA3F22B961B90004C012 /* Photo+CoreDataProperties.swift */,
-				5FF3A64A22B92D31004AD107 /* Flickr.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -303,6 +322,7 @@
 				5F47AB4C22B927AC0066E87D /* PhotoViewController.swift in Sources */,
 				5F4BCA4322B966110004C012 /* GroupsViewController.swift in Sources */,
 				5F47AB4A22B927AC0066E87D /* AppDelegate.swift in Sources */,
+				5F24648322B9953F00D970F9 /* Constants.swift in Sources */,
 				5FF3A64C22B92D31004AD107 /* Flickr.xcdatamodeld in Sources */,
 				5F4BCA4522B9665A0004C012 /* GroupsTableViewCell.swift in Sources */,
 				5F4BCA4122B961B90004C012 /* Photo+CoreDataProperties.swift in Sources */,
