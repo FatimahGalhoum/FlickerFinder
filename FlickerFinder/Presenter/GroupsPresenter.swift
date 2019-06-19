@@ -21,7 +21,8 @@ class GroupsPresenter{
 
     
     func fetchGroupData(searchText:String, handler: @escaping (_ status: Bool) -> ()){
-        Alamofire.request(photoURL(apiKey: apiKey, textTosearchFor: searchText, page: 1, numberOfPhotos: 100)).responseJSON { (response) in
+        Alamofire.request(groupsURL(apiKey: apiKey, textTosearchFor: searchText, page: 1, numberOfPhotos: 100)).responseJSON { (response) in
+            
             if response.result.isSuccess {
                 var data = Data()
                 data = response.data!
@@ -29,17 +30,19 @@ class GroupsPresenter{
                 let flickrGroups = try? decoder.decode(FlickrGroupsResult.self, from: data)
                 
                 
-                for item in 0...(flickrGroups?.groups!.group.count)! - 1 {
+                for item in 0...(flickrGroups?.groups!.group.count)! - 1{
                     let groupURL = "https://farm\((flickrGroups?.groups?.group[item].iconfarm)!).staticflickr.com/\((flickrGroups?.groups?.group[item].iconserver)!)/buddyicons/\((flickrGroups?.groups?.group[item].nsid)!)_m.jpg"
                     let iconID = flickrGroups?.groups?.group[item].nsid
                     let members = flickrGroups?.groups?.group[item].members
                     let photos = flickrGroups?.groups?.group[item].pool_count
+                    let name = flickrGroups?.groups?.group[item].name
                     let topics = flickrGroups?.groups?.group[item].topic_count
 
                     let flickerGroup = Group(context: PresistenceService.context)
                     flickerGroup.id = iconID
                     flickerGroup.members = members
                     flickerGroup.topics = topics!
+                    flickerGroup.name = name
                     flickerGroup.photos = photos
                     flickerGroup.iconURL = groupURL
                     flickerGroup.url = URL(string: flickerGroup.iconURL!)

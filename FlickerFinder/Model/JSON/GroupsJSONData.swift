@@ -28,6 +28,6 @@ struct GroupURL : Codable {
     let iconserver: String
     let iconfarm: Int
     let members: String
-    let topic_count: Int32
+    let topic_count: String
     let pool_count: String
 }

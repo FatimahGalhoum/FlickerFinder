@@ -22,6 +22,7 @@ class PhotoTableViewCell: UITableViewCell {
         super.awakeFromNib()
             containerView.layer.cornerRadius = 6
             containerView.layer.masksToBounds = true
+            //containerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

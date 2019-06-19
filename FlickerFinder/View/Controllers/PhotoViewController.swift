@@ -35,6 +35,7 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         photoPresenter.fetchPhotoData(searchText: keyword!, handler: {(finished) in
             if finished {
                 self.tableView.reloadData()
+                print("well done")
             }
         })
         self.view.endEditing(true)
