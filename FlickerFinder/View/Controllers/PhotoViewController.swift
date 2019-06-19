@@ -10,6 +10,8 @@ import UIKit
 import Kingfisher
 import CoreData
 class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoDataDelegate {
+
+    
   
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -21,6 +23,7 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         photoPresenter = PhotoPresenter()
         photoPresenter.delegate = self
         
+        
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
         do {
             let photo = try PresistenceService.context.fetch(fetchRequest)
@@ -30,6 +33,7 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     }
 
 
+    //MARK: - Photos search bar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let keyword = searchBar.text
         photoPresenter.fetchPhotoData(searchText: keyword!, handler: {(finished) in
@@ -41,12 +45,34 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         self.view.endEditing(true)
     }
     
+    
+    //MARK: - Photos delegate functions
     func updateUI(data: [Photo]){
         dataArray = data
         tableView.reloadData()
     }
     
+    func noData(bool: Bool) {
+        if bool{
+            let alert = UIAlertController(title: "No Photos", message: "No photos to show", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
+    }
     
+    func internetConnection(bool: Bool) {
+        if bool{
+            let alert = UIAlertController(title: "Ooops!", message: "There is no internet connection\nTry Again", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    
+    
+    //MARK: - Photos TableView Data
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataArray.count
     }

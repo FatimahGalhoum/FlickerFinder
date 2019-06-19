@@ -17,12 +17,23 @@ class PhotoTableViewCell: UITableViewCell {
     
     
     
-    
+    let cornerRadius : CGFloat = 25.0
+
     override func awakeFromNib() {
         super.awakeFromNib()
-            containerView.layer.cornerRadius = 6
-            containerView.layer.masksToBounds = true
-            //containerView.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+//            containerView.layer.cornerRadius = 10
+//            containerView.layer.masksToBounds = true
+        containerView.layer.cornerRadius = cornerRadius
+        containerView.layer.shadowColor = UIColor.gray.cgColor
+        containerView.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
+        containerView.layer.shadowRadius = 3.0
+        containerView.layer.shadowOpacity = 0.9
+        
+    
+        flickrPhoto.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        flickrPhoto.layer.cornerRadius = cornerRadius
+        flickrPhoto.clipsToBounds = true
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

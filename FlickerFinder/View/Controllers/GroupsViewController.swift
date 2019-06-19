@@ -32,6 +32,7 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         
     }
 
+    //MARK: - Groups search bar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let keyword = searchBar.text
         groupPresenter.fetchGroupData(searchText: keyword!, handler: {(finished) in
@@ -42,14 +43,33 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         self.view.endEditing(true)
     }
     
-    
+    //MARK:- Groups delegte functions
     func updateUI(data: [Group]) {
         dataArray = data
         tableView.reloadData()
     }
+    func noData(bool: Bool) {
+        if bool{
+            let alert = UIAlertController(title: "No Groups", message: "There is no groups under this Name.\nTry Again", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func internetConnection(bool: Bool) {
+        if bool{
+            let alert = UIAlertController(title: "Ooops!", message: "There is no internet connection\nTry Again", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
     
 
-    // MARK: - Table view data source
+
+    // MARK: - Groups TabeleView data
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataArray.count

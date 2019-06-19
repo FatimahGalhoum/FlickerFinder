@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+
 let apiKey = "1f128ae8f61db46906d7cad293fd3e23"
 
 func photoURL(apiKey key:String,textTosearchFor text: String,page: Int, numberOfPhotos number : Int) -> String {
