@@ -47,7 +47,7 @@ class PresistenceService{
     
 
     static func deleteAllData(_ entity: String){
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "\(entity)")
         fetchRequest.returnsObjectsAsFaults = false
         
         do{
@@ -57,7 +57,7 @@ class PresistenceService{
                 persistentContainer.viewContext.delete(objectData)
             }
         } catch let error {
-            print("Delete all data in \(Photo.self) error:", error)
+            print("Delete all data in \(entity.self) error:", error)
         }
         
         

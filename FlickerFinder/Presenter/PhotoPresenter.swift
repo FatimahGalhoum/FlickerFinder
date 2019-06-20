@@ -12,7 +12,7 @@ import Alamofire
 
 //MARK: - Photos delegate
 protocol PhotoDataDelegate {
-    func updateUI(data: [Photo])
+    //func updateUI(data: [Photo])
     func noData(bool: Bool)
     func internetConnection(bool: Bool)
 }
@@ -50,14 +50,12 @@ class PhotoPresenter{
                     flickrPhoto.url = URL(string: flickrPhoto.imageURL!)
                     PresistenceService.saveContext()
                     self.flickrPhotoCoreData.append(flickrPhoto)
-                    self.delegate.updateUI(data: self.flickrPhotoCoreData)
-                    //print(self.flickrPhotoCoreData[item].id)
-                    //print(self.flickrPhotoCoreData[item].imageURL)
                 }
                 } else {
                     self.delegate.noData(bool: true)
                     print("nil")
                 }
+                //self.delegate.updateUI(data: self.flickrPhotoCoreData)
                 handler(true)
 
             } else {

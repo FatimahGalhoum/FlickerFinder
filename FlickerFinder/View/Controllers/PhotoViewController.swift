@@ -17,40 +17,60 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     
     var photoPresenter : PhotoPresenter!
     var dataArray = [Photo]()
+    
+    var featchedRC: NSFetchedResultsController<Photo>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         photoPresenter = PhotoPresenter()
         photoPresenter.delegate = self
         
-        
-        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
-        do {
-            let photo = try PresistenceService.context.fetch(fetchRequest)
-            dataArray = photo
-            tableView.reloadData()
-        } catch {}
+        refreshData()
     }
 
 
     //MARK: - Photos search bar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let keyword = searchBar.text
+        if keyword?.isEmpty == false {
         photoPresenter.fetchPhotoData(searchText: keyword!, handler: {(finished) in
             if finished {
-                self.tableView.reloadData()
+                self.refreshData()
+//                let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+//                do {
+//                    let photo = try PresistenceService.context.fetch(fetchRequest)
+//                    self.dataArray = photo
+//                    self.tableView.reloadData()
+//                } catch {}
                 print("well done")
             }
         })
+        } else {
+            let alert = UIAlertController(title: "Enter text", message: "Enter text to search for", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
         self.view.endEditing(true)
+    }
+    
+    func refreshData(){
+        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        do {
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+            self.featchedRC = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: PresistenceService.context, sectionNameKeyPath: nil, cacheName: nil)
+            try self.featchedRC.performFetch()
+            self.tableView.reloadData()
+        } catch {}
     }
     
     
     //MARK: - Photos delegate functions
-    func updateUI(data: [Photo]){
-        dataArray = data
-        tableView.reloadData()
-    }
+    
+//    func updateUI(data: [Photo]){
+//        dataArray = data
+//        tableView.reloadData()
+//    }
     
     func noData(bool: Bool) {
         if bool{
@@ -74,15 +94,21 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     
     //MARK: - Photos TableView Data
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataArray.count
+        guard let photo = featchedRC.fetchedObjects else { return 0 }
+        return photo.count
+        //return dataArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "flickrPhotoCell", for: indexPath) as! PhotoTableViewCell
-        
         cell.flickrPhoto.kf.indicatorType = .activity
-        cell.flickrPhoto.kf.setImage(with: dataArray[indexPath.row].url)
-        cell.titleOfPhotoLabel.text = dataArray[indexPath.row].title
+        
+         let photo = featchedRC.object(at: indexPath)
+        
+        cell.flickrPhoto.kf.setImage(with: photo.url)
+        cell.titleOfPhotoLabel.text = photo.title
+        //cell.flickrPhoto.kf.setImage(with: dataArray[indexPath.row].url)
+        //cell.titleOfPhotoLabel.text = dataArray[indexPath.row].title
         return cell
     }
     

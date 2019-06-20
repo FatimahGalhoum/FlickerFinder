@@ -37,6 +37,8 @@ class GroupsPresenter{
                 let decoder = JSONDecoder()
                 let flickrGroups = try? decoder.decode(FlickrGroupsResult.self, from: data)
                 
+                PresistenceService.deleteAllData("Group")
+
                 if flickrGroups?.groups?.group.isEmpty == false {
                 for item in 0...(flickrGroups?.groups!.group.count)! - 1{
                     let groupURL = "https://farm\((flickrGroups?.groups?.group[item].iconfarm)!).staticflickr.com/\((flickrGroups?.groups?.group[item].iconserver)!)/buddyicons/\((flickrGroups?.groups?.group[item].nsid)!)_m.jpg"
@@ -61,7 +63,6 @@ class GroupsPresenter{
                     PresistenceService.saveContext()
                     
                     self.flickrGroupsCoreData.append(flickerGroup)
-                    self.delegate.updateUI(data: self.flickrGroupsCoreData)
                     //print(self.flickrPhotoCoreData[item].id)
                     //print(self.flickrPhotoCoreData[item].imageURL)
                 }
@@ -69,7 +70,7 @@ class GroupsPresenter{
                     self.delegate.noData(bool: true)
                     print("nil")
                 }
-                
+                self.delegate.updateUI(data: self.flickrGroupsCoreData)
                 handler(true)
                 
             } else {

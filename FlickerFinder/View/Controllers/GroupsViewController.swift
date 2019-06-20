@@ -25,8 +25,8 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         
         let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
         do {
-            let photo = try PresistenceService.context.fetch(fetchRequest)
-            dataArray = photo
+            let group = try PresistenceService.context.fetch(fetchRequest)
+            dataArray = group
             tableView.reloadData()
         } catch {}
         
@@ -35,11 +35,23 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
     //MARK: - Groups search bar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let keyword = searchBar.text
+        if keyword?.isEmpty == false {
         groupPresenter.fetchGroupData(searchText: keyword!, handler: {(finished) in
             if finished {
-                self.tableView.reloadData()
+                let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
+                do {
+                    let group = try PresistenceService.context.fetch(fetchRequest)
+                    self.dataArray = group
+                    self.tableView.reloadData()
+                } catch {}
             }
         })
+        } else {
+            let alert = UIAlertController(title: "Enter text", message: "Enter text to search for", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        }
         self.view.endEditing(true)
     }
     
