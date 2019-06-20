@@ -32,8 +32,9 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
     //MARK: - Groups search bar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let keyword = searchBar.text
+        guard let escapedString = keyword?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
         if keyword?.isEmpty == false {
-        groupPresenter.fetchGroupData(searchText: keyword!, handler: {(finished) in
+        groupPresenter.fetchGroupData(searchText: escapedString, handler: {(finished) in
             os_log("fetchGroupData function takes search text as parameter", log: Log.parameters, type: .debug)
             if finished {
                 os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)

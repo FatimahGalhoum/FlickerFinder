@@ -30,6 +30,7 @@ class GroupsPresenter{
     
     //MARK: - Groups featch data
     func fetchGroupData(searchText:String, handler: @escaping (_ status: Bool) -> ()){
+        
         Alamofire.request(groupsURL(apiKey: apiKey, textTosearchFor: searchText, page: 1, numberOfPhotos: 100)).responseJSON { (response) in
             
             if response.result.isSuccess {

@@ -35,8 +35,9 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     //MARK: - Photos search bar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let keyword = searchBar.text
+        guard let escapedString = keyword?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
         if keyword?.isEmpty == false {
-        photoPresenter.fetchPhotoData(searchText: keyword!, handler: {(finished) in
+        photoPresenter.fetchPhotoData(searchText: escapedString, handler: {(finished) in
             os_log("fetchPhotoData function takes search text as parameter", log: Log.parameters, type: .debug)
             if finished {
                 os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)
