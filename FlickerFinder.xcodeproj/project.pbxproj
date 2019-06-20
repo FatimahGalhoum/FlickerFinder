@@ -52,6 +52,7 @@
 		5F4BCA4722B968DD0004C012 /* GroupsJSONData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsJSONData.swift; sourceTree = "<group>"; };
 		5F521EC222BA857600E917AB /* ConvertToKAndM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertToKAndM.swift; sourceTree = "<group>"; };
 		5F521EC422BAA24C00E917AB /* DropShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropShadowView.swift; sourceTree = "<group>"; };
+		5F521EC622BBDB2C00E917AB /* FlickerFinder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlickerFinder.entitlements; sourceTree = "<group>"; };
 		5FF3A64422B92B06004AD107 /* PhotosJSONData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosJSONData.swift; sourceTree = "<group>"; };
 		5FF3A64622B92C9D004AD107 /* PhotoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPresenter.swift; sourceTree = "<group>"; };
 		5FF3A64B22B92D31004AD107 /* Flickr.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Flickr.xcdatamodel; sourceTree = "<group>"; };
@@ -116,6 +117,7 @@
 		5F47AB4822B927AC0066E87D /* FlickerFinder */ = {
 			isa = PBXGroup;
 			children = (
+				5F521EC622BBDB2C00E917AB /* FlickerFinder.entitlements */,
 				5F24648122B9952100D970F9 /* Constant */,
 				5F47AB5D22B928DC0066E87D /* Model */,
 				5F47AB5C22B928CD0066E87D /* Presenter */,
@@ -242,6 +244,11 @@
 				TargetAttributes = {
 					5F47AB4522B927AC0066E87D = {
 						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

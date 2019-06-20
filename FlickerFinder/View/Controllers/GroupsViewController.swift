@@ -15,21 +15,16 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
     @IBOutlet weak var searchBar: UISearchBar!
     
     var groupPresenter : GroupsPresenter!
-    var dataArray = [Group]()
+    var featchedRCGroups: NSFetchedResultsController<Group>!
+    //var dataArray = [Group]()
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         groupPresenter = GroupsPresenter()
         groupPresenter.delegate = self
         
-        let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
-        do {
-            let group = try PresistenceService.context.fetch(fetchRequest)
-            dataArray = group
-            tableView.reloadData()
-        } catch {}
-        
+        refreshData()
     }
 
     //MARK: - Groups search bar
@@ -38,12 +33,7 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         if keyword?.isEmpty == false {
         groupPresenter.fetchGroupData(searchText: keyword!, handler: {(finished) in
             if finished {
-                let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
-                do {
-                    let group = try PresistenceService.context.fetch(fetchRequest)
-                    self.dataArray = group
-                    self.tableView.reloadData()
-                } catch {}
+                self.refreshData()
             }
         })
         } else {
@@ -55,11 +45,19 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         self.view.endEditing(true)
     }
     
-    //MARK:- Groups delegte functions
-    func updateUI(data: [Group]) {
-        dataArray = data
-        tableView.reloadData()
+    
+    //MARK: - Refresh core data
+    func refreshData(){
+        let fetchRequest: NSFetchRequest<Group> = Group.fetchRequest()
+        do {
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+            self.featchedRCGroups = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: PresistenceService.context, sectionNameKeyPath: nil, cacheName: nil)
+            try self.featchedRCGroups.performFetch()
+            self.tableView.reloadData()
+        } catch {}
     }
+    
+    //MARK:- Groups delegte functions
     func noData(bool: Bool) {
         if bool{
             let alert = UIAlertController(title: "No Groups", message: "There is no groups under this Name.\nTry Again", preferredStyle: .alert)
@@ -84,19 +82,22 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
     // MARK: - Groups TabeleView data
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataArray.count
+        guard let group = featchedRCGroups.fetchedObjects else { return 0 }
+        return group.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "flickrGroupsCell", for: indexPath) as! GroupsTableViewCell
 
+        let group = featchedRCGroups.object(at: indexPath)
+
         cell.iconImage.kf.indicatorType = .activity
-        cell.iconImage.kf.setImage(with: dataArray[indexPath.row].url)
-        cell.groupNameLabel.text = dataArray[indexPath.row].name
-        cell.discussionLabel.text = dataArray[indexPath.row].topics
-        cell.membersLabel.text = dataArray[indexPath.row].members
-        cell.photosLabel.text = dataArray[indexPath.row].photos
+        cell.iconImage.kf.setImage(with: group.url)
+        cell.groupNameLabel.text = group.name
+        cell.discussionLabel.text = group.topics
+        cell.membersLabel.text = group.members
+        cell.photosLabel.text = group.photos
  
         return cell
     }

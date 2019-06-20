@@ -12,7 +12,7 @@ import CoreData
 
 //MARK: - Groups delegate
 protocol GroupsDataDelegate {
-    func updateUI(data: [Group])
+    //func updateUI(data: [Group])
     func noData(bool: Bool)
     func internetConnection(bool: Bool)
 }
@@ -63,14 +63,13 @@ class GroupsPresenter{
                     PresistenceService.saveContext()
                     
                     self.flickrGroupsCoreData.append(flickerGroup)
-                    //print(self.flickrPhotoCoreData[item].id)
-                    //print(self.flickrPhotoCoreData[item].imageURL)
+
                 }
                 } else {
                     self.delegate.noData(bool: true)
                     print("nil")
                 }
-                self.delegate.updateUI(data: self.flickrGroupsCoreData)
+
                 handler(true)
                 
             } else {
