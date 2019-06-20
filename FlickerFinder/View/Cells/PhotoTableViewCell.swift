@@ -21,15 +21,13 @@ class PhotoTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//            containerView.layer.cornerRadius = 10
-//            containerView.layer.masksToBounds = true
+
         containerView.layer.cornerRadius = cornerRadius
         containerView.layer.shadowColor = UIColor.gray.cgColor
         containerView.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
         containerView.layer.shadowRadius = 3.0
         containerView.layer.shadowOpacity = 0.9
-        
-    
+
         flickrPhoto.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         flickrPhoto.layer.cornerRadius = cornerRadius
         flickrPhoto.clipsToBounds = true

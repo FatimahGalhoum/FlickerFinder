@@ -9,6 +9,9 @@
 import UIKit
 import Kingfisher
 import CoreData
+import os
+
+
 class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoDataDelegate {
 
   
@@ -24,8 +27,8 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         super.viewDidLoad()
         photoPresenter = PhotoPresenter()
         photoPresenter.delegate = self
-        
         refreshData()
+        os_log("refreshData function called inside PhotoViewController to retreive last search", log: Log.featchedCoreData, type: .info)
     }
 
 
@@ -35,11 +38,14 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         if keyword?.isEmpty == false {
         photoPresenter.fetchPhotoData(searchText: keyword!, handler: {(finished) in
             if finished {
+                os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)
                 self.refreshData()
-                print("well done")
+                os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
+                //print("well done")
             }
         })
         } else {
+            os_log("search bar is empty", log: Log.catchError, type: .error)
             let alert = UIAlertController(title: "Enter text", message: "Enter text to search for", preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(action)
@@ -58,7 +64,9 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
             self.featchedRCPhotos = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: PresistenceService.context, sectionNameKeyPath: nil, cacheName: nil)
             try self.featchedRCPhotos.performFetch()
             self.tableView.reloadData()
-        } catch {}
+        } catch {
+            os_log("Can't fetch core data", log: Log.catchError, type: .error)
+        }
     }
     
     
@@ -70,11 +78,14 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
             let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(action)
             present(alert, animated: true, completion: nil)
+            os_log("Function noData called. No data to show", log: Log.alertControllerCalled, type: .info)
+
         }
     }
     
     func internetConnection(bool: Bool) {
         if bool{
+            os_log("Function noData called. Intrenet connection issue", log: Log.alertControllerCalled, type: .info)
             let alert = UIAlertController(title: "Ooops!", message: "There is no internet connection\nTry Again", preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(action)
@@ -94,8 +105,18 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         let cell = tableView.dequeueReusableCell(withIdentifier: "flickrPhotoCell", for: indexPath) as! PhotoTableViewCell
         
         let photo = featchedRCPhotos.object(at: indexPath)
+        
+//        KingfisherManager.shared.retrieveImage(with: photo.url!, options: nil, progressBlock: nil, completionHandler: { image, error, cacheType, imageURL in
+//            cell.flickrPhoto.image = image
+//
+//        })
+        
+//        if let data =  photo.image as Data?{
+//            cell.flickrPhoto.image = UIImage(data: data)
+//        }
         cell.flickrPhoto.kf.indicatorType = .activity
         cell.flickrPhoto.kf.setImage(with: photo.url)
+        
         cell.titleOfPhotoLabel.text = photo.title
         return cell
     }

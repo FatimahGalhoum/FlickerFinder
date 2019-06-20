@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Kingfisher
+import os
 
 class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDataDelegate {
 
@@ -25,6 +26,7 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         groupPresenter.delegate = self
         
         refreshData()
+        os_log("refreshData function called inside GroupsViewController to retreive last search", log: Log.featchedCoreData, type: .info)
     }
 
     //MARK: - Groups search bar
@@ -33,10 +35,13 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         if keyword?.isEmpty == false {
         groupPresenter.fetchGroupData(searchText: keyword!, handler: {(finished) in
             if finished {
+                os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)
                 self.refreshData()
+                 os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
             }
         })
         } else {
+            os_log("search bar is empty", log: Log.catchError, type: .error)
             let alert = UIAlertController(title: "Enter text", message: "Enter text to search for", preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(action)
@@ -54,12 +59,15 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
             self.featchedRCGroups = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: PresistenceService.context, sectionNameKeyPath: nil, cacheName: nil)
             try self.featchedRCGroups.performFetch()
             self.tableView.reloadData()
-        } catch {}
+        } catch {
+            os_log("Can't fetch core data", log: Log.catchError, type: .error)
+        }
     }
     
     //MARK:- Groups delegte functions
     func noData(bool: Bool) {
         if bool{
+            os_log("Function noData called. No data to show", log: Log.alertControllerCalled, type: .info)
             let alert = UIAlertController(title: "No Groups", message: "There is no groups under this Name.\nTry Again", preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(action)
@@ -69,6 +77,7 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
     
     func internetConnection(bool: Bool) {
         if bool{
+            os_log("Function noData called. Intrenet connection issue", log: Log.alertControllerCalled, type: .info)
             let alert = UIAlertController(title: "Ooops!", message: "There is no internet connection\nTry Again", preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(action)

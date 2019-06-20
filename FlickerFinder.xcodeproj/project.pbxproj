@@ -25,6 +25,7 @@
 		5F4BCA4822B968DD0004C012 /* GroupsJSONData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4BCA4722B968DD0004C012 /* GroupsJSONData.swift */; };
 		5F521EC322BA857600E917AB /* ConvertToKAndM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F521EC222BA857600E917AB /* ConvertToKAndM.swift */; };
 		5F521EC522BAA24C00E917AB /* DropShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F521EC422BAA24C00E917AB /* DropShadowView.swift */; };
+		5F91FDED22BBEB8E00AF86F7 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F91FDEC22BBEB8E00AF86F7 /* Log.swift */; };
 		5FF3A64522B92B06004AD107 /* PhotosJSONData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF3A64422B92B06004AD107 /* PhotosJSONData.swift */; };
 		5FF3A64722B92C9D004AD107 /* PhotoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF3A64622B92C9D004AD107 /* PhotoPresenter.swift */; };
 		5FF3A64C22B92D31004AD107 /* Flickr.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5FF3A64A22B92D31004AD107 /* Flickr.xcdatamodeld */; };
@@ -52,6 +53,7 @@
 		5F4BCA4722B968DD0004C012 /* GroupsJSONData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsJSONData.swift; sourceTree = "<group>"; };
 		5F521EC222BA857600E917AB /* ConvertToKAndM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertToKAndM.swift; sourceTree = "<group>"; };
 		5F521EC422BAA24C00E917AB /* DropShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropShadowView.swift; sourceTree = "<group>"; };
+		5F91FDEC22BBEB8E00AF86F7 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		5FF3A64422B92B06004AD107 /* PhotosJSONData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosJSONData.swift; sourceTree = "<group>"; };
 		5FF3A64622B92C9D004AD107 /* PhotoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPresenter.swift; sourceTree = "<group>"; };
 		5FF3A64B22B92D31004AD107 /* Flickr.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Flickr.xcdatamodel; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		5F47AB4822B927AC0066E87D /* FlickerFinder */ = {
 			isa = PBXGroup;
 			children = (
+				5F91FDEE22BBEBB100AF86F7 /* Log */,
 				5F24648122B9952100D970F9 /* Constant */,
 				5F47AB5D22B928DC0066E87D /* Model */,
 				5F47AB5C22B928CD0066E87D /* Presenter */,
@@ -180,6 +183,14 @@
 				5F4BCA4722B968DD0004C012 /* GroupsJSONData.swift */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		5F91FDEE22BBEBB100AF86F7 /* Log */ = {
+			isa = PBXGroup;
+			children = (
+				5F91FDEC22BBEB8E00AF86F7 /* Log.swift */,
+			);
+			path = Log;
 			sourceTree = "<group>";
 		};
 		5FF3A64322B92AB8004AD107 /* StoryBoards */ = {
@@ -349,6 +360,7 @@
 				5FF3A64C22B92D31004AD107 /* Flickr.xcdatamodeld in Sources */,
 				5F521EC322BA857600E917AB /* ConvertToKAndM.swift in Sources */,
 				5F4BCA4522B9665A0004C012 /* GroupsTableViewCell.swift in Sources */,
+				5F91FDED22BBEB8E00AF86F7 /* Log.swift in Sources */,
 				5F4BCA4122B961B90004C012 /* Photo+CoreDataProperties.swift in Sources */,
 				5F521EC522BAA24C00E917AB /* DropShadowView.swift in Sources */,
 				5F47AB6122B929670066E87D /* PhotoTableViewCell.swift in Sources */,
@@ -506,7 +518,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = FatimahGalhoum.FlickerFinder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FatimahGalhoum.FlickerFinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -525,7 +537,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = FatimahGalhoum.FlickerFinder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FatimahGalhoum.FlickerFinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

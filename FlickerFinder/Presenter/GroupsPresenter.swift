@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import CoreData
+import os
 
 //MARK: - Groups delegate
 protocol GroupsDataDelegate {
@@ -38,7 +39,8 @@ class GroupsPresenter{
                 let flickrGroups = try? decoder.decode(FlickrGroupsResult.self, from: data)
                 
                 PresistenceService.deleteAllData("Group")
-
+                os_log("Function deleteAllData called to delete group data from core data", log: Log.updateCoreData, type: .info)
+                
                 if flickrGroups?.groups?.group.isEmpty == false {
                 for item in 0...(flickrGroups?.groups!.group.count)! - 1{
                     let groupURL = "https://farm\((flickrGroups?.groups?.group[item].iconfarm)!).staticflickr.com/\((flickrGroups?.groups?.group[item].iconserver)!)/buddyicons/\((flickrGroups?.groups?.group[item].nsid)!)_m.jpg"
@@ -61,12 +63,13 @@ class GroupsPresenter{
                     flickerGroup.iconURL = groupURL
                     flickerGroup.url = URL(string: flickerGroup.iconURL!)
                     PresistenceService.saveContext()
-                    
+                    //os_log("Function saveContext called to save group data in core data", log: Log.updateCoreData, type: .info)
                     self.flickrGroupsCoreData.append(flickerGroup)
 
                 }
                 } else {
                     self.delegate.noData(bool: true)
+                    os_log("Data from API is empty", log: Log.catchError, type: .error)
                     print("nil")
                 }
 
@@ -74,6 +77,7 @@ class GroupsPresenter{
                 
             } else {
                 self.delegate.internetConnection(bool: true)
+                os_log("Internt connection issues", log: Log.catchError, type: .error)
                 print("Can not get the data")
             }
         }

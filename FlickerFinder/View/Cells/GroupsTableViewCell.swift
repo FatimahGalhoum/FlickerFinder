@@ -22,8 +22,6 @@ class GroupsTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-//            containrView.layer.cornerRadius = 10
-//            containrView.layer.masksToBounds = true
 
         containrView.layer.cornerRadius = cornerRadius
         containrView.layer.shadowColor = UIColor.gray.cgColor

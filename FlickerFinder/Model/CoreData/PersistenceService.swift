@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-
+import os
 
 class PresistenceService{
     
@@ -27,6 +27,7 @@ class PresistenceService{
             (storeDescription, error) in
             print(storeDescription)
             if let error = error as NSError? {
+                os_log("Unresolved error", log: Log.catchError, type: .error)
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
@@ -40,6 +41,7 @@ class PresistenceService{
                 try context.save()
             } catch {
                 let error = error as NSError
+                os_log("can't save to core data", log: Log.catchError, type: .error)
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }
@@ -58,6 +60,7 @@ class PresistenceService{
             }
         } catch let error {
             print("Delete all data in \(entity.self) error:", error)
+            os_log("Delete all data in entity error", log: Log.catchError, type: .error)
         }
         
         

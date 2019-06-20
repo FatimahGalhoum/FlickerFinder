@@ -8,7 +8,8 @@
 
 import Foundation
 import Alamofire
-
+import Kingfisher
+import os
 
 //MARK: - Photos delegate
 protocol PhotoDataDelegate {
@@ -36,6 +37,7 @@ class PhotoPresenter{
                 let flickrPhotos = try? decoder.decode(FlickrResult.self, from: data)
                 
                 PresistenceService.deleteAllData("Photo")
+                os_log("Function deleteAllData called to delete photo data from core data", log: Log.updateCoreData, type: .info)
                 
                 if flickrPhotos?.photos?.photo.isEmpty == false{
                 for item in 0...(flickrPhotos?.photos!.photo.count)! - 1 {
@@ -48,11 +50,22 @@ class PhotoPresenter{
                     flickrPhoto.title = title
                     flickrPhoto.imageURL = photoURL
                     flickrPhoto.url = URL(string: flickrPhoto.imageURL!)
+                    
+//                    KingfisherManager.shared.retrieveImage(with: flickrPhoto.url!, options: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+//                        if (error != nil){
+//                            
+//                        } else {
+//                        flickrPhoto.image = image?.pngData() as NSData?
+//                        }
+//                    })
+//                    
                     PresistenceService.saveContext()
+                    //os_log("Function saveContext called to save photo data in core data", log: Log.updateCoreData, type: .info)
                     self.flickrPhotoCoreData.append(flickrPhoto)
                 }
                 } else {
                     self.delegate.noData(bool: true)
+                    os_log("Data from API is empty", log: Log.catchError, type: .error)
                     print("nil")
                 }
                 //self.delegate.updateUI(data: self.flickrPhotoCoreData)
@@ -60,7 +73,8 @@ class PhotoPresenter{
 
             } else {
                 self.delegate.internetConnection(bool: true)
-                print("Can not get the data")
+                os_log("Internt connection issues", log: Log.catchError, type: .error)
+
             }
         }
     }
