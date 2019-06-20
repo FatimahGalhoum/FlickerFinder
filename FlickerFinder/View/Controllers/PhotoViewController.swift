@@ -121,5 +121,16 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         return cell
     }
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showImage" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destination as! ShowPhotoViewController
+                let photo = featchedRCPhotos.object(at: indexPath)
+                destinationController.url = photo.url
+            }
+        }
+    }
+    
 }
 

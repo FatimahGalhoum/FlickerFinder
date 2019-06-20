@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -75,6 +76,7 @@
                                     <outlet property="containerView" destination="Par-JM-KgG" id="s0m-Ud-PXb"/>
                                     <outlet property="flickrPhoto" destination="lMo-Uh-0fE" id="854-Zb-XpB"/>
                                     <outlet property="titleOfPhotoLabel" destination="pC0-BQ-omZ" id="fCN-Sk-MUG"/>
+                                    <segue destination="Ymi-Nt-ZlR" kind="show" identifier="showImage" id="SbG-EF-sfc"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -91,6 +93,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sGW-6O-Anf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2000.0000000000002" y="132.58928571428572"/>
+        </scene>
+        <!--Show Photo View Controller-->
+        <scene sceneID="XHQ-HP-lC2">
+            <objects>
+                <viewController id="Ymi-Nt-ZlR" customClass="ShowPhotoViewController" customModule="FlickerFinder" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oc5-p0-5kT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fj9-nR-8tv">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="o2g-C1-a1a" firstAttribute="bottom" secondItem="fj9-nR-8tv" secondAttribute="bottom" id="28y-Sx-X1w"/>
+                            <constraint firstItem="fj9-nR-8tv" firstAttribute="leading" secondItem="o2g-C1-a1a" secondAttribute="leading" id="PlG-wu-uBZ"/>
+                            <constraint firstItem="o2g-C1-a1a" firstAttribute="trailing" secondItem="fj9-nR-8tv" secondAttribute="trailing" id="g0b-2l-aHo"/>
+                            <constraint firstItem="fj9-nR-8tv" firstAttribute="top" secondItem="o2g-C1-a1a" secondAttribute="top" id="qDI-Ux-hF8"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="o2g-C1-a1a"/>
+                    </view>
+                    <connections>
+                        <outlet property="photo" destination="fj9-nR-8tv" id="lVL-FC-zlx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vu0-2g-cFD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2845" y="133"/>
         </scene>
         <!--Groups-->
         <scene sceneID="WaU-s4-jup">
