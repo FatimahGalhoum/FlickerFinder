@@ -13,9 +13,9 @@ import os
 
 //MARK: - Groups delegate
 protocol GroupsDataDelegate {
-    //func updateUI(data: [Group])
     func noData(bool: Bool)
     func internetConnection(bool: Bool)
+    func numberOfPages(num: Int)
 }
 
 
@@ -29,9 +29,9 @@ class GroupsPresenter{
     
     
     //MARK: - Groups featch data
-    func fetchGroupData(searchText:String, handler: @escaping (_ status: Bool) -> ()){
+    func fetchGroupData(refresh: Bool = false, currentPage: Int, searchText:String, handler: @escaping (_ status: Bool) -> ()){
         
-        Alamofire.request(groupsURL(apiKey: apiKey, textTosearchFor: searchText, page: 1, numberOfPhotos: 100)).responseJSON { (response) in
+        Alamofire.request(groupsURL(apiKey: apiKey, textTosearchFor: searchText, page: currentPage, numberOfPhotos: 10)).responseJSON { (response) in
             
             if response.result.isSuccess {
                 var data = Data()
@@ -39,9 +39,7 @@ class GroupsPresenter{
                 let decoder = JSONDecoder()
                 let flickrGroups = try? decoder.decode(FlickrGroupsResult.self, from: data)
                 
-                PresistenceService.deleteAllData("Group")
-                os_log("Function deleteAllData called to delete group data from core data", log: Log.updateCoreData, type: .info)
-                
+                print("\n\n\n\n\n\n\(groupsURL(apiKey: apiKey, textTosearchFor: searchText, page: currentPage, numberOfPhotos: 10))")
                 if flickrGroups?.groups?.group.isEmpty == false {
                 for item in 0...(flickrGroups?.groups!.group.count)! - 1{
                     let groupURL = "https://farm\((flickrGroups?.groups?.group[item].iconfarm)!).staticflickr.com/\((flickrGroups?.groups?.group[item].iconserver)!)/buddyicons/\((flickrGroups?.groups?.group[item].nsid)!)_m.jpg"
@@ -55,6 +53,9 @@ class GroupsPresenter{
                     let photosInt = formatNumber(Int(photos!)!)
                     let topicsInt = formatNumber(Int(topics!)!)
                     
+                    let numberOfPages = flickrGroups?.groups?.pages
+                    self.delegate.numberOfPages(num: numberOfPages!)
+                    
                     let flickerGroup = Group(context: PresistenceService.context)
                     flickerGroup.id = iconID
                     flickerGroup.members = membersInt
@@ -64,7 +65,6 @@ class GroupsPresenter{
                     flickerGroup.iconURL = groupURL
                     flickerGroup.url = URL(string: flickerGroup.iconURL!)
                     PresistenceService.saveContext()
-                    //os_log("Function saveContext called to save group data in core data", log: Log.updateCoreData, type: .info)
                     self.flickrGroupsCoreData.append(flickerGroup)
 
                 }

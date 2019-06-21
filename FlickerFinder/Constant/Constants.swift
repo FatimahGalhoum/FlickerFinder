@@ -13,7 +13,7 @@ import Foundation
 let apiKey = "1f128ae8f61db46906d7cad293fd3e23"
 
 func photoURL(apiKey key:String,textTosearchFor text: String,page: Int, numberOfPhotos number : Int) -> String {
-    let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(apiKey)&text=\(text)&per_page=\(number)&page=&format=json&nojsoncallback=1"
+    let url = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(apiKey)&text=\(text)&per_page=\(number)&page=\(page)&format=json&nojsoncallback=1"
     return url
 }
     
@@ -22,4 +22,10 @@ func groupsURL(apiKey key:String,textTosearchFor text: String,page: Int, numberO
     let url = "https://www.flickr.com/services/rest/?method=flickr.groups.search&api_key=\(apiKey)&text=\(text)&per_page=\(number)&page=\(page)&format=json&nojsoncallback=1"
     
     return url
+}
+
+
+func encodingString(keyword: String) -> String{
+    guard let escapedString = keyword.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return "Nothing" }
+    return escapedString
 }

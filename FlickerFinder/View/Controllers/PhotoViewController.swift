@@ -18,15 +18,24 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     @IBOutlet weak var searchBar: UISearchBar!
     
     var photoPresenter : PhotoPresenter!
+    var refresher: UIRefreshControl!
     var featchedRCPhotos: NSFetchedResultsController<Photo>!
 
-    //var dataArray = [Photo]()
+    var currentPage = 1
+    var shouldShowLoadingCell = false
+    var keyword = ""
+    var numberOfPages: Int!
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         photoPresenter = PhotoPresenter()
         photoPresenter.delegate = self
+        
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refreshPhotos), for: .valueChanged)
+        refresher.beginRefreshing()
+        
         refreshData()
         os_log("refreshData function called inside PhotoViewController to retreive last search", log: Log.featchedCoreData, type: .info)
     }
@@ -34,16 +43,16 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
 
     //MARK: - Photos search bar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let keyword = searchBar.text
-        guard let escapedString = keyword?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-        if keyword?.isEmpty == false {
-        photoPresenter.fetchPhotoData(searchText: escapedString, handler: {(finished) in
+        keyword = searchBar.text ?? ""
+        
+        if keyword.isEmpty == false {
+            photoPresenter.fetchPhotoData(currentPage: currentPage, searchText: encodingString(keyword: keyword), handler: {(finished) in
             os_log("fetchPhotoData function takes search text as parameter", log: Log.parameters, type: .debug)
             if finished {
-                os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)
-                self.refreshData()
-                os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
-                //print("well done")
+                PresistenceService.deleteAllData("Photo")
+                os_log("Function deleteAllData called to delete photo data from core data", log: Log.updateCoreData, type: .info)
+                
+                self.pagedResponse()
             }
         })
         } else {
@@ -57,6 +66,29 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     }
     
     
+    //MARK: - Pagination
+    @objc
+    func refreshPhotos() {
+        currentPage = 1
+        photoPresenter.fetchPhotoData(refresh: true, currentPage: currentPage, searchText: encodingString(keyword: keyword), handler: {(finished) in
+            self.pagedResponse()
+            print("refresh Photos")
+        })
+    }
+    func fetchNextPage() {
+        currentPage += 1
+        photoPresenter.fetchPhotoData(currentPage: currentPage, searchText: encodingString(keyword: keyword), handler: {(finished) in
+            self.pagedResponse()
+        })
+    }
+    
+    func pagedResponse(){
+        self.shouldShowLoadingCell = self.currentPage < self.numberOfPages
+        self.refresher.endRefreshing()
+        os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)
+        self.refreshData()
+        os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
+    }
     
     //MARK: - Refresh core data
     func refreshData(){
@@ -95,15 +127,22 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         }
     }
     
+    func numberOfPages(num: Int) {
+        numberOfPages = num
+    }
     
     
     //MARK: - Photos TableView Data
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let photo = featchedRCPhotos.fetchedObjects else { return 0 }
-        return photo.count
+        return shouldShowLoadingCell ? photo.count + 1 : photo.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if isLoadingIndexPath(indexPath) {
+            return LoadingCell(style: .default, reuseIdentifier: "loading")
+        } else {
         let cell = tableView.dequeueReusableCell(withIdentifier: "flickrPhotoCell", for: indexPath) as! PhotoTableViewCell
         
         let photo = featchedRCPhotos.object(at: indexPath)
@@ -121,8 +160,19 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         
         cell.titleOfPhotoLabel.text = photo.title
         return cell
+        }
     }
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard isLoadingIndexPath(indexPath) else { return }
+        fetchNextPage()
+    }
+    
+    private func isLoadingIndexPath(_ indexPath: IndexPath) -> Bool {
+        guard shouldShowLoadingCell else { return false }
+        let photo = featchedRCPhotos.fetchedObjects
+        return indexPath.row == photo?.count
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showImage" {

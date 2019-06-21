@@ -13,9 +13,9 @@ import os
 
 //MARK: - Photos delegate
 protocol PhotoDataDelegate {
-    //func updateUI(data: [Photo])
     func noData(bool: Bool)
     func internetConnection(bool: Bool)
+    func numberOfPages(num: Int)
 }
 
 
@@ -28,23 +28,25 @@ class PhotoPresenter{
     
 
     //MARK: - Photos featch function
-    func fetchPhotoData(searchText:String, handler: @escaping (_ status: Bool) -> ()){
+    func fetchPhotoData(refresh: Bool = false, currentPage: Int, searchText:String, handler: @escaping (_ status: Bool) -> ()){
         
-        Alamofire.request(photoURL(apiKey: apiKey, textTosearchFor: searchText, page: 1, numberOfPhotos: 100)).responseJSON { (response) in
+        Alamofire.request(photoURL(apiKey: apiKey, textTosearchFor: searchText, page: currentPage, numberOfPhotos: 30)).responseJSON { (response) in
             if response.result.isSuccess {
                 var data = Data()
                 data = response.data!
                 let decoder = JSONDecoder()
                 let flickrPhotos = try? decoder.decode(FlickrResult.self, from: data)
                 
-                PresistenceService.deleteAllData("Photo")
-                os_log("Function deleteAllData called to delete photo data from core data", log: Log.updateCoreData, type: .info)
                 
                 if flickrPhotos?.photos?.photo.isEmpty == false{
                 for item in 0...(flickrPhotos?.photos!.photo.count)! - 1 {
                     let photoURL = "https://farm\((flickrPhotos?.photos?.photo[item].farm)!).staticflickr.com/\((flickrPhotos?.photos?.photo[item].server)!)/\((flickrPhotos?.photos?.photo[item].id)!)_\((flickrPhotos?.photos?.photo[item].secret)!)_m.jpg"
                     let photoID = flickrPhotos?.photos?.photo[item].id
                     let title = flickrPhotos?.photos?.photo[item].title
+                    
+                    let numberOfPages = flickrPhotos?.photos?.pages
+                    self.delegate.numberOfPages(num: numberOfPages!)
+                    
                     
                     let flickrPhoto = Photo(context: PresistenceService.context)
                     flickrPhoto.id = photoID
@@ -61,7 +63,6 @@ class PhotoPresenter{
 //                    })
 //                    
                     PresistenceService.saveContext()
-                    //os_log("Function saveContext called to save photo data in core data", log: Log.updateCoreData, type: .info)
                     self.flickrPhotoCoreData.append(flickrPhoto)
                 }
                 } else {
@@ -69,7 +70,6 @@ class PhotoPresenter{
                     os_log("Data from API is empty", log: Log.catchError, type: .error)
                     print("nil")
                 }
-                //self.delegate.updateUI(data: self.flickrPhotoCoreData)
                 handler(true)
 
             } else {

@@ -16,14 +16,22 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
     @IBOutlet weak var searchBar: UISearchBar!
     
     var groupPresenter : GroupsPresenter!
+    var refresher: UIRefreshControl!
     var featchedRCGroups: NSFetchedResultsController<Group>!
-    //var dataArray = [Group]()
     
+    var currentPage = 1
+    var shouldShowLoadingCell = false
+    var keyword = ""
+    var numberOfPages: Int!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         groupPresenter = GroupsPresenter()
         groupPresenter.delegate = self
+        
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refreshGroups), for: .valueChanged)
+        refresher.beginRefreshing()
         
         refreshData()
         os_log("refreshData function called inside GroupsViewController to retreive last search", log: Log.featchedCoreData, type: .info)
@@ -31,15 +39,14 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
 
     //MARK: - Groups search bar
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let keyword = searchBar.text
-        guard let escapedString = keyword?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-        if keyword?.isEmpty == false {
-        groupPresenter.fetchGroupData(searchText: escapedString, handler: {(finished) in
+        keyword = searchBar.text ?? ""
+        if keyword.isEmpty == false {
+            groupPresenter.fetchGroupData(currentPage: currentPage, searchText: encodingString(keyword: keyword), handler: {(finished) in
             os_log("fetchGroupData function takes search text as parameter", log: Log.parameters, type: .debug)
             if finished {
-                os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)
-                self.refreshData()
-                 os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
+                PresistenceService.deleteAllData("Group")
+                os_log("Function deleteAllData called to delete photo data from core data", log: Log.updateCoreData, type: .info)
+                self.pagedResponse()
             }
         })
         } else {
@@ -52,6 +59,29 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         self.view.endEditing(true)
     }
     
+    //MARK: - Pagination
+    @objc
+    func refreshGroups() {
+        currentPage = 1
+        groupPresenter.fetchGroupData(refresh: true, currentPage: currentPage, searchText: encodingString(keyword: keyword), handler: {(finished) in
+            self.pagedResponse()
+            print("refresh Photos")
+        })
+    }
+    func fetchNextPage() {
+        currentPage += 1
+        groupPresenter.fetchGroupData(currentPage: currentPage, searchText: encodingString(keyword: keyword), handler: {(finished) in
+            self.pagedResponse()
+        })
+    }
+    
+    func pagedResponse(){
+        self.shouldShowLoadingCell = self.currentPage < self.numberOfPages
+        self.refresher.endRefreshing()
+        os_log("FetchGroupData is called to get data from API", log: Log.networking, type: .info)
+        self.refreshData()
+        os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
+    }
     
     //MARK: - Refresh core data
     func refreshData(){
@@ -87,6 +117,9 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         }
     }
     
+    func numberOfPages(num: Int) {
+        numberOfPages = num
+    }
     
 
 
@@ -94,11 +127,15 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let group = featchedRCGroups.fetchedObjects else { return 0 }
-        return group.count
+        return shouldShowLoadingCell ? group.count + 1 : group.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if isLoadingIndexPath(indexPath) {
+            return LoadingCell(style: .default, reuseIdentifier: "loading")
+        } else {
         let cell = tableView.dequeueReusableCell(withIdentifier: "flickrGroupsCell", for: indexPath) as! GroupsTableViewCell
 
         let group = featchedRCGroups.object(at: indexPath)
@@ -111,5 +148,18 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         cell.photosLabel.text = group.photos
  
         return cell
+        }
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard isLoadingIndexPath(indexPath) else { return }
+        fetchNextPage()
+    }
+    
+    private func isLoadingIndexPath(_ indexPath: IndexPath) -> Bool {
+        guard shouldShowLoadingCell else { return false }
+        let group = featchedRCGroups.fetchedObjects
+        return indexPath.row == group?.count
     }
 }
