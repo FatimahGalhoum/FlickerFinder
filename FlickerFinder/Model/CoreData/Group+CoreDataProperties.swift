@@ -2,7 +2,7 @@
 //  Group+CoreDataProperties.swift
 //  
 //
-//  Created by Fatimah Galhoum on 6/19/19.
+//  Created by Fatimah Galhoum on 6/21/19.
 //
 //
 
@@ -23,5 +23,6 @@ extension Group {
     @NSManaged public var photos: String?
     @NSManaged public var topics: String?
     @NSManaged public var url: URL?
+    @NSManaged public var row: Int32
 
 }

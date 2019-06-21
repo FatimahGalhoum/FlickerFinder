@@ -26,7 +26,8 @@ class GroupsPresenter{
     var flickrGroupsCoreData = [Group]()
     var delegate : GroupsDataDelegate!
 
-    
+    var count = 1
+
     
     //MARK: - Groups featch data
     func fetchGroupData(refresh: Bool = false, currentPage: Int, searchText:String, handler: @escaping (_ status: Bool) -> ()){
@@ -56,6 +57,7 @@ class GroupsPresenter{
                     let numberOfPages = flickrGroups?.groups?.pages
                     self.delegate.numberOfPages(num: numberOfPages!)
                     
+                    
                     let flickerGroup = Group(context: PresistenceService.context)
                     flickerGroup.id = iconID
                     flickerGroup.members = membersInt
@@ -64,6 +66,10 @@ class GroupsPresenter{
                     flickerGroup.photos = photosInt
                     flickerGroup.iconURL = groupURL
                     flickerGroup.url = URL(string: flickerGroup.iconURL!)
+                    flickerGroup.row = Int32(self.count + 1)
+                    
+                    
+                    
                     PresistenceService.saveContext()
                     self.flickrGroupsCoreData.append(flickerGroup)
 

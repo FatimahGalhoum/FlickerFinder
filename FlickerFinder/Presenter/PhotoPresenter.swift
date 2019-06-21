@@ -26,6 +26,7 @@ class PhotoPresenter{
     var flickrPhotoCoreData = [Photo]()
     var delegate : PhotoDataDelegate!
     
+    var count = 1
 
     //MARK: - Photos featch function
     func fetchPhotoData(refresh: Bool = false, currentPage: Int, searchText:String, handler: @escaping (_ status: Bool) -> ()){
@@ -53,7 +54,8 @@ class PhotoPresenter{
                     flickrPhoto.title = title
                     flickrPhoto.imageURL = photoURL
                     flickrPhoto.url = URL(string: flickrPhoto.imageURL!)
-                    
+                    flickrPhoto.row = Int32(self.count + 1)
+
 //                    KingfisherManager.shared.retrieveImage(with: flickrPhoto.url!, options: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
 //                        if (error != nil){
 //                            

@@ -2,7 +2,7 @@
 //  Photo+CoreDataClass.swift
 //  
 //
-//  Created by Fatimah Galhoum on 6/18/19.
+//  Created by Fatimah Galhoum on 6/21/19.
 //
 //
 

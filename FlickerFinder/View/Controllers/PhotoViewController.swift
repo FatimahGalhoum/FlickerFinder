@@ -94,7 +94,7 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     func refreshData(){
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
         do {
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "row", ascending: true)]
             self.featchedRCPhotos = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: PresistenceService.context, sectionNameKeyPath: nil, cacheName: nil)
             try self.featchedRCPhotos.performFetch()
             self.tableView.reloadData()
