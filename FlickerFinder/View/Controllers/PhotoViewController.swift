@@ -25,10 +25,12 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     var shouldShowLoadingCell = false
     var keyword = ""
     var numberOfPages: Int!
+    var nodataBool = false
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         photoPresenter = PhotoPresenter()
         photoPresenter.delegate = self
         
@@ -51,9 +53,9 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
             if finished {
                 PresistenceService.deleteAllData("Photo")
                 os_log("Function deleteAllData called to delete photo data from core data", log: Log.updateCoreData, type: .info)
-                
                 self.pagedResponse()
             }
+                self.nodataBool = false
         })
         } else {
             os_log("search bar is empty", log: Log.catchError, type: .error)
@@ -83,11 +85,13 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     }
     
     func pagedResponse(){
+        if nodataBool == false{
         self.shouldShowLoadingCell = self.currentPage < self.numberOfPages
         self.refresher.endRefreshing()
         os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)
         self.refreshData()
         os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
+        }
     }
     
     //MARK: - Refresh core data
@@ -108,6 +112,7 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     //MARK: - Delegates functions
     func noData(bool: Bool) {
         if bool{
+            nodataBool = true
             let alert = UIAlertController(title: "No Photos", message: "No photos to show", preferredStyle: .alert)
             let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(action)
@@ -166,6 +171,8 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard isLoadingIndexPath(indexPath) else { return }
         fetchNextPage()
+        os_log("fetchNextPage is called", log: Log.pagination, type: .info)
+
     }
     
     private func isLoadingIndexPath(_ indexPath: IndexPath) -> Bool {
@@ -180,6 +187,7 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
                 let destinationController = segue.destination as! ShowPhotoViewController
                 let photo = featchedRCPhotos.object(at: indexPath)
                 destinationController.url = photo.url
+                destinationController.text = photo.title!
             }
         }
     }

@@ -17,6 +17,8 @@ struct Log {
     static let catchError = OSLog(subsystem: subsystem, category: "catchError")
     static let alertControllerCalled = OSLog(subsystem: subsystem, category: "alertControllerCalled")
     static let parameters = OSLog(subsystem: subsystem, category: "parameters")
+    static let pagination = OSLog(subsystem: subsystem, category: "pagination")
+
 
 
 }

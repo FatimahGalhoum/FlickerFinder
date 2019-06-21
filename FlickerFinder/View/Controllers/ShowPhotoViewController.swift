@@ -15,16 +15,18 @@ class ShowPhotoViewController: UIViewController {
     var featchedRCPhotos: NSFetchedResultsController<Photo>!
 
     @IBOutlet weak var photo: UIImageView!
+    @IBOutlet weak var textView: UITextView!
+    
     
     var url: URL!
-    
+    var text = ""
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         photo.kf.setImage(with: url)
         navigationItem.backBarButtonItem?.tintColor = UIColor.white
-
+        textView.text = text
     }
     
 

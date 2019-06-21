@@ -103,25 +103,37 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fj9-nR-8tv">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="611"/>
                             </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="jzF-qT-TO0">
+                                <rect key="frame" x="0.0" y="707" width="414" height="106"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="o2g-C1-a1a" firstAttribute="bottom" secondItem="fj9-nR-8tv" secondAttribute="bottom" id="28y-Sx-X1w"/>
+                            <constraint firstItem="jzF-qT-TO0" firstAttribute="bottom" secondItem="o2g-C1-a1a" secondAttribute="bottom" id="3Gm-Bj-Ble"/>
+                            <constraint firstItem="jzF-qT-TO0" firstAttribute="trailing" secondItem="o2g-C1-a1a" secondAttribute="trailing" id="4qP-Os-BbU"/>
+                            <constraint firstItem="jzF-qT-TO0" firstAttribute="top" secondItem="fj9-nR-8tv" secondAttribute="bottom" constant="8" symbolic="YES" id="KMz-Og-iZ2"/>
                             <constraint firstItem="fj9-nR-8tv" firstAttribute="leading" secondItem="o2g-C1-a1a" secondAttribute="leading" id="PlG-wu-uBZ"/>
+                            <constraint firstItem="jzF-qT-TO0" firstAttribute="leading" secondItem="o2g-C1-a1a" secondAttribute="leading" id="adH-bP-8tG"/>
                             <constraint firstItem="o2g-C1-a1a" firstAttribute="trailing" secondItem="fj9-nR-8tv" secondAttribute="trailing" id="g0b-2l-aHo"/>
+                            <constraint firstItem="jzF-qT-TO0" firstAttribute="top" secondItem="o2g-C1-a1a" secondAttribute="top" constant="619" id="nRZ-F8-CiI"/>
                             <constraint firstItem="fj9-nR-8tv" firstAttribute="top" secondItem="o2g-C1-a1a" secondAttribute="top" id="qDI-Ux-hF8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="o2g-C1-a1a"/>
                     </view>
                     <connections>
                         <outlet property="photo" destination="fj9-nR-8tv" id="lVL-FC-zlx"/>
+                        <outlet property="textView" destination="jzF-qT-TO0" id="F0x-UW-xqE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vu0-2g-cFD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2845" y="133"/>
+            <point key="canvasLocation" x="2844.9275362318845" y="132.58928571428572"/>
         </scene>
         <!--Groups-->
         <scene sceneID="WaU-s4-jup">
