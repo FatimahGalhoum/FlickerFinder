@@ -146,7 +146,7 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         let group = featchedRCGroups.object(at: indexPath)
 
         cell.iconImage.kf.indicatorType = .activity
-        cell.iconImage.kf.setImage(with: group.url)
+        cell.iconImage.kf.setImage(with: group.url, placeholder: UIImage(named: "no-image"), options: nil, progressBlock: nil, completionHandler: nil)
         cell.groupNameLabel.text = group.name
         cell.discussionLabel.text = group.topics
         cell.membersLabel.text = group.members
@@ -169,4 +169,21 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         let group = featchedRCGroups.fetchedObjects
         return indexPath.row == group?.count
     }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showGroupDetail" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destination as! ShowGroupViewController
+                let group = featchedRCGroups.object(at: indexPath)
+                destinationController.url = group.url
+                destinationController.memberCount = group.members ?? "No members"
+                destinationController.discussionCount = group.topics ?? "No discussion"
+                destinationController.photoCount = group.photos ?? "No photos"
+
+            }
+        }
+    }
+    
 }
+
