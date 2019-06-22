@@ -8,5 +8,6 @@ target 'FlickerFinder' do
 
 pod 'Alamofire'
 pod 'Kingfisher'
+pod 'ReachabilitySwift'
 
 end

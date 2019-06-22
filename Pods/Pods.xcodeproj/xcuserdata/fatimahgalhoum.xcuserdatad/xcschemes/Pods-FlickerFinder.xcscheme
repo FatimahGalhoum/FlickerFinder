@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "163440DE0B6B328208ED2B1D3F14FA70"
+               BlueprintIdentifier = "FABCBE73A7DDDA42A78A398F319C5B65"
                BuildableName = "Pods_FlickerFinder.framework"
                BlueprintName = "Pods-FlickerFinder"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "163440DE0B6B328208ED2B1D3F14FA70"
+            BlueprintIdentifier = "FABCBE73A7DDDA42A78A398F319C5B65"
             BuildableName = "Pods_FlickerFinder.framework"
             BlueprintName = "Pods-FlickerFinder"
             ReferencedContainer = "container:Pods.xcodeproj">

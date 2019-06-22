@@ -12,6 +12,7 @@ import CoreData
 import os
 
 
+
 class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoDataDelegate {
 
   
@@ -54,8 +55,15 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
                 PresistenceService.deleteAllData("Photo")
                 os_log("Function deleteAllData called to delete photo data from core data", log: Log.updateCoreData, type: .info)
                 self.pagedResponse()
-            }
+                } else if finished == false {
+                    os_log("Intrenet connection issue", log: Log.alertControllerCalled, type: .info)
+                    let alert = UIAlertController(title: "Ooops!", message: "There is no internet connection\nTry Again", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                }
                 self.nodataBool = false
+
         })
         } else {
             os_log("search bar is empty", log: Log.catchError, type: .error)
@@ -86,11 +94,11 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
     
     func pagedResponse(){
         if nodataBool == false{
-        self.shouldShowLoadingCell = self.currentPage < self.numberOfPages
-        self.refresher.endRefreshing()
-        os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)
-        self.refreshData()
-        os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
+            self.shouldShowLoadingCell = self.currentPage < self.numberOfPages
+            self.refresher.endRefreshing()
+            os_log("FetchPhotoData is called to get data from API", log: Log.networking, type: .info)
+            self.refreshData()
+            os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
         }
     }
     
@@ -148,23 +156,13 @@ class PhotoViewController: UITableViewController, UISearchBarDelegate, PhotoData
         if isLoadingIndexPath(indexPath) {
             return LoadingCell(style: .default, reuseIdentifier: "loading")
         } else {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "flickrPhotoCell", for: indexPath) as! PhotoTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "flickrPhotoCell", for: indexPath) as! PhotoTableViewCell
         
-        let photo = featchedRCPhotos.object(at: indexPath)
-        
-//        KingfisherManager.shared.retrieveImage(with: photo.url!, options: nil, progressBlock: nil, completionHandler: { image, error, cacheType, imageURL in
-//            cell.flickrPhoto.image = image
-//
-//        })
-        
-//        if let data =  photo.image as Data?{
-//            cell.flickrPhoto.image = UIImage(data: data)
-//        }
-        cell.flickrPhoto.kf.indicatorType = .activity
-        cell.flickrPhoto.kf.setImage(with: photo.url)
-        
-        cell.titleOfPhotoLabel.text = photo.title
-        return cell
+            let photo = featchedRCPhotos.object(at: indexPath)
+            cell.flickrPhoto.kf.indicatorType = .activity
+            cell.flickrPhoto.kf.setImage(with: photo.url)
+            cell.titleOfPhotoLabel.text = photo.title
+            return cell
         }
     }
     

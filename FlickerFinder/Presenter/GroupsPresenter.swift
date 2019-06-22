@@ -24,7 +24,7 @@ protocol GroupsDataDelegate {
 class GroupsPresenter{
     
     var flickrGroupsCoreData = [Group]()
-    var delegate : GroupsDataDelegate!
+    var delegate : GroupsDataDelegate?
 
     var count = 1
 
@@ -32,7 +32,7 @@ class GroupsPresenter{
     //MARK: - Groups featch data
     func fetchGroupData(refresh: Bool = false, currentPage: Int, searchText:String, handler: @escaping (_ status: Bool) -> ()){
         
-        Alamofire.request(groupsURL(apiKey: apiKey, textTosearchFor: searchText, page: currentPage, numberOfPhotos: 10)).responseJSON { (response) in
+        Alamofire.request(groupsURL(apiKey: apiKey, textTosearchFor: searchText, page: currentPage, numberOfPhotos: 10), method: .get).responseJSON { (response) in
             
             if response.result.isSuccess {
                 var data = Data()
@@ -40,7 +40,6 @@ class GroupsPresenter{
                 let decoder = JSONDecoder()
                 let flickrGroups = try? decoder.decode(FlickrGroupsResult.self, from: data)
                 
-                print("\n\n\n\n\n\n\(groupsURL(apiKey: apiKey, textTosearchFor: searchText, page: currentPage, numberOfPhotos: 10))")
                 if flickrGroups?.groups?.group.isEmpty == false {
                 for item in 0...(flickrGroups?.groups!.group.count)! - 1{
                     let groupURL = "https://farm\((flickrGroups?.groups?.group[item].iconfarm)!).staticflickr.com/\((flickrGroups?.groups?.group[item].iconserver)!)/buddyicons/\((flickrGroups?.groups?.group[item].nsid)!)_m.jpg"
@@ -55,8 +54,9 @@ class GroupsPresenter{
                     let topicsInt = formatNumber(Int(topics!)!)
                     
                     let numberOfPages = flickrGroups?.groups?.pages
-                    self.delegate.numberOfPages(num: numberOfPages!)
-                    
+                    if self.delegate != nil{
+                        self.delegate?.numberOfPages(num: numberOfPages!)
+                    }
                     
                     let flickerGroup = Group(context: PresistenceService.context)
                     flickerGroup.id = iconID
@@ -75,7 +75,9 @@ class GroupsPresenter{
 
                 }
                 } else {
-                    self.delegate.noData(bool: true)
+                    if self.delegate != nil{
+                        self.delegate?.noData(bool: true)
+                    }
                     os_log("Data from API is empty", log: Log.catchError, type: .error)
                     print("nil")
                 }
@@ -83,10 +85,16 @@ class GroupsPresenter{
                 handler(true)
                 
             } else {
-                self.delegate.internetConnection(bool: true)
+                if self.delegate != nil{
+                    self.delegate?.internetConnection(bool: true)
+                }
                 os_log("Internt connection issues", log: Log.catchError, type: .error)
                 print("Can not get the data")
             }
+        }
+        
+        if !NetworkState.isConnected(){
+            handler(false)
         }
     }
     

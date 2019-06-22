@@ -26,23 +26,17 @@ class ShowGroupViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateUI()
+        groupPhoto.layer.cornerRadius = 25
+        groupPhoto.clipsToBounds = true
+    }
+    
 
+    func updateUI() {
         groupPhoto.kf.setImage(with: url, placeholder: UIImage(named: "no-image"), options: nil, progressBlock: nil, completionHandler: nil)
         membersCountLabel.text = memberCount
         photoCountLabel.text = photoCount
         discussionCountLabel.text = discussionCount
-   
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

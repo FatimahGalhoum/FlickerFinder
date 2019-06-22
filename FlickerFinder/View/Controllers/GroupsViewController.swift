@@ -48,7 +48,13 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
                 PresistenceService.deleteAllData("Group")
                 os_log("Function deleteAllData called to delete photo data from core data", log: Log.updateCoreData, type: .info)
                 self.pagedResponse()
-            }
+            } else if finished == false {
+                os_log("Intrenet connection issue", log: Log.alertControllerCalled, type: .info)
+                let alert = UIAlertController(title: "Ooops!", message: "There is no internet connection\nTry Again", preferredStyle: .alert)
+                let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
+                }
                 self.nodataBool = false
         })
         } else {
@@ -79,11 +85,11 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
     
     func pagedResponse(){
         if nodataBool == false{
-        self.shouldShowLoadingCell = self.currentPage < self.numberOfPages
-        self.refresher.endRefreshing()
-        os_log("FetchGroupData is called to get data from API", log: Log.networking, type: .info)
-        self.refreshData()
-        os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
+            self.shouldShowLoadingCell = self.currentPage < self.numberOfPages
+            self.refresher.endRefreshing()
+            os_log("FetchGroupData is called to get data from API", log: Log.networking, type: .info)
+            self.refreshData()
+            os_log("refreshData function after retrive data from API", log: Log.featchedCoreData, type: .info)
         }
     }
     
@@ -141,18 +147,17 @@ class GroupsViewController: UITableViewController, UISearchBarDelegate, GroupsDa
         if isLoadingIndexPath(indexPath) {
             return LoadingCell(style: .default, reuseIdentifier: "loading")
         } else {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "flickrGroupsCell", for: indexPath) as! GroupsTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "flickrGroupsCell", for: indexPath) as! GroupsTableViewCell
 
-        let group = featchedRCGroups.object(at: indexPath)
-
-        cell.iconImage.kf.indicatorType = .activity
-        cell.iconImage.kf.setImage(with: group.url, placeholder: UIImage(named: "no-image"), options: nil, progressBlock: nil, completionHandler: nil)
-        cell.groupNameLabel.text = group.name
-        cell.discussionLabel.text = group.topics
-        cell.membersLabel.text = group.members
-        cell.photosLabel.text = group.photos
+            let group = featchedRCGroups.object(at: indexPath)
+            cell.iconImage.kf.indicatorType = .activity
+            cell.iconImage.kf.setImage(with: group.url, placeholder: UIImage(named: "no-image"), options: nil, progressBlock: nil, completionHandler: nil)
+            cell.groupNameLabel.text = group.name
+            cell.discussionLabel.text = group.topics
+            cell.membersLabel.text = group.members
+            cell.photosLabel.text = group.photos
  
-        return cell
+            return cell
         }
     }
     
