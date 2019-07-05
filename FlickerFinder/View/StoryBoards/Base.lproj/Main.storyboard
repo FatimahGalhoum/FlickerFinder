@@ -209,7 +209,7 @@
                                                             <rect key="frame" x="92" y="0.0" width="67" height="30"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="photo" translatesAutoresizingMaskIntoConstraints="NO" id="FyC-Td-9KA">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="20.000000000000114" height="30.000000000000114"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="30" id="OHS-fC-w7c"/>
                                                                         <constraint firstAttribute="width" constant="20" id="rX5-w4-Wha"/>

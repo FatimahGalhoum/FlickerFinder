@@ -2,16 +2,16 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/fatimahgalhoum/Desktop/FlickerFinder/FlickerFinder/Model/CoreData/Photo+CoreDataClass.swift">
+      location = "group:FlickerFinder/Photo+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:/Users/fatimahgalhoum/Desktop/FlickerFinder/FlickerFinder/Model/CoreData/Photo+CoreDataProperties.swift">
+      location = "group:FlickerFinder/Photo+CoreDataProperties.swift">
    </FileRef>
    <FileRef
-      location = "group:/Users/fatimahgalhoum/Desktop/FlickerFinder/FlickerFinder/Model/CoreData/Group+CoreDataClass.swift">
+      location = "group:FlickerFinder/Group+CoreDataClass.swift">
    </FileRef>
    <FileRef
-      location = "group:/Users/fatimahgalhoum/Desktop/FlickerFinder/FlickerFinder/Model/CoreData/Group+CoreDataProperties.swift">
+      location = "group:FlickerFinder/Group+CoreDataProperties.swift">
    </FileRef>
    <FileRef
       location = "group:FlickerFinder.xcodeproj">
